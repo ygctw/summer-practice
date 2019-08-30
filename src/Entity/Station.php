@@ -2,76 +2,53 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\StationRepository")
  */
-class Station
+class Station extends AbstractYandexEntity
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $stationTitle;
+    protected $title;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $stationCode;
+    protected $code;
+
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Region", inversedBy="stations")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Settlement", inversedBy="stations")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $region;
+    private $settlement;
 
-    public function getId(): ?int
+
+    public function getSettlement(): ?Settlement
     {
-        return $this->id;
+        return $this->settlement;
     }
 
-    public function getStationTitle(): ?string
+    public function setSettlement(?Settlement $settlement): self
     {
-        return $this->stationTitle;
-    }
-
-    public function setStationTitle(string $stationTitle): self
-    {
-        $this->stationTitle = $stationTitle;
+        $this->settlement = $settlement;
 
         return $this;
     }
 
-    public function getStationCode(): ?string
+    public function setRelation(AbstractYandexEntity $entity = null)
     {
-        return $this->stationCode;
-    }
-
-    public function setStationCode(string $stationCode): self
-    {
-        $this->stationCode = $stationCode;
-
-        return $this;
-    }
-
-    public function getRegion(): ?Region
-    {
-        return $this->region;
-    }
-
-    public function setRegion(?Region $region): self
-    {
-        $this->region = $region;
-
+        $this->settlement = $entity;
         return $this;
     }
 }

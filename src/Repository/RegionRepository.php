@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Region;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -14,6 +16,17 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class RegionRepository extends ServiceEntityRepository
 {
+    public function saveRegion(Region $region){
+        try {
+            $this->_em->persist($region);
+            $this->_em->flush();
+            return true;
+        } catch (OptimisticLockException $e) {
+        } catch (ORMException $e) {
+        }
+        return false;
+    }
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Region::class);

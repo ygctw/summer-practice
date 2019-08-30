@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -17,6 +19,25 @@ class UserRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, User::class);
+    }
+
+    public function createUser($email, $password): User
+    {
+        return (new User())
+            ->setEmail($email)
+            ->setPassword($password);
+    }
+
+    public function saveUser(User $user): bool
+    {
+        try {
+            $this->_em->persist($user);
+            $this->_em->flush();
+            return true;
+        } catch (OptimisticLockException $e) {
+        } catch (ORMException $e) {
+        }
+        return false;
     }
 
     // /**

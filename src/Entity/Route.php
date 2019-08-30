@@ -31,20 +31,20 @@ class Route
     private $routeToId;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $routeInterval;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $routeNotificationId;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="routes")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    /**
+     * @ORM\Column(type="time")
+     */
+    private $routeInterval;
+
+    /**
+     * @ORM\Column(type="time", nullable=true)
+     */
+    private $routeNotification;
 
     public function getId(): ?int
     {
@@ -75,30 +75,6 @@ class Route
         return $this;
     }
 
-    public function getRouteInterval(): ?int
-    {
-        return $this->routeInterval;
-    }
-
-    public function setRouteInterval(int $routeInterval): self
-    {
-        $this->routeInterval = $routeInterval;
-
-        return $this;
-    }
-
-    public function getRouteNotificationId(): ?int
-    {
-        return $this->routeNotificationId;
-    }
-
-    public function setRouteNotificationId(?int $routeNotificationId): self
-    {
-        $this->routeNotificationId = $routeNotificationId;
-
-        return $this;
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
@@ -107,6 +83,30 @@ class Route
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getRouteInterval(): ?\DateTimeInterface
+    {
+        return $this->routeInterval;
+    }
+
+    public function setRouteInterval(\DateTimeInterface $routeInterval): self
+    {
+        $this->routeInterval = $routeInterval;
+
+        return $this;
+    }
+
+    public function getRouteNotification(): ?\DateTimeInterface
+    {
+        return $this->routeNotification;
+    }
+
+    public function setRouteNotification(?\DateTimeInterface $routeNotification): self
+    {
+        $this->routeNotification = $routeNotification;
 
         return $this;
     }
